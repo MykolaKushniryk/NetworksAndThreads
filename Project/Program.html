@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://getbootstrap.com/docs/4.3/examples/dashboard/dashboard.css">
+    <title>Мережі і Потоки: Метод Мінті</title>
+<style>
+button {
+  padding: 15px;
+  margin-left:  5px;
+  vertical-align: top;  
+}
+.circle circle{
+  fill: lightsteelblue;
+  stroke: steelblue;
+}
+ 
+.circle.dragging {
+  fill: rgb(0, 255, 255);
+  stroke: rgb(5, 87, 238);
+}
+ 
+.link-weight{
+        padding: 5px;
+        position: absolute;
+        width: 75px;
+}
+ 
+.axis line {
+  fill: none;
+  stroke: rgb(132, 174, 236);
+  shape-rendering: crispEdges;
+  vector-effect: non-scaling-stroke;
+ 
+}
+ 
+.link-text{
+  font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 15px;
+  fill: blue;
+}
+ 
+@keyframes  selected-anim{
+  from {
+    stroke: blue;
+    stroke-width: 1px;
+    }
+  50% {
+    stroke: rgb(0, 255, 136);
+    stroke-width: 3px;
+    }
+  to {
+    stroke: blue;
+    stroke-width: 1px;
+    }
+}
+ 
+.circle-selected circle{
+    animation: selected-anim 2s linear infinite;
+}
+ 
+ 
+.arrowHead{
+  fill: green;
+}
+
+#bottom_bar {
+    position: absolute;
+    display: inline-block;
+    bottom: 0;
+    left: 15px;
+}
+
+.team-button {
+  border-color: aliceblue;
+  color: aliceblue;
+  margin-right: 5px;
+  padding-right: 15px;
+}
+</style>
+ 
+</head>
+<body>
+
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Метод мінтні</a>
+        <a class="nav-link btn btn-sm btn-outline-secondary team-button" href="#" data-toggle="modal" data-target="#teamModal">                    
+          Про програму
+        </a>
+      </nav>
+      
+      <div class="container-fluid">
+        <div class="row">
+          <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+            <div class="sidebar-sticky">
+              <ul class="nav flex-column">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#">
+                    
+                    Дії <span class="sr-only">(current)</span>
+                  </a>
+                </li>
+                <li class="nav-item mx-5">
+                    <div class="btn-group-vertical">
+                        <button type="button" id="add_node" class="btn btn-sm btn-outline-info" data-toggle="tooltip" data-placement="right" title="">Добавити вершину</button>
+                        <button type="button" id="select_node" class="btn btn-sm btn-outline-info">Вибрати вершину</button>
+                        <button type="button" id="select_start" class="btn btn-sm btn-outline-info">Задати початок(h0)</button>
+                        <button type="button" id="delete_node" class="btn btn-sm btn-outline-warning">Видалити вершину</button>
+                        <button type="button" id="delete_link" class="btn btn-sm btn-outline-warning">Видалити ребро</button>
+                    </div>
+                </li>
+              </ul>
+            </div>
+          </nav>
+      
+
+          <div class="modal fade" id="teamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Про програму</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                  <b>Університет:</b> <i>ЧНУ ім. Юрія Федьковича</i></br>
+                  <b>Кафедра:</b> <i>МПУіК</i></br>
+                  <b>Група:</b> <i>441ск</i></br>
+                  <b>Менеджер:</b> <i>Ільчук Дмитро</i></br>
+                  <b>Програміст:</b> <i>Червеняк Іван</i></br>
+                  <b>Тестувальник:</b> <i>Кушнірик Микола</i></br>
+                  <b>Документатор:</b> <i>-</i></br>
+                  </div>
+                  <div class="modal-footer justify-content-center text-muted text-center text-small">
+                    <p class="">Чернівці © 2019</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+              <h1 class="h2">Граф</h1>
+              <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group mr-2">
+                  <button type="button" id="btn-minti" class="btn btn-sm btn-outline-success">Знайти найкоротший шлях(Метод Мінті)</button>
+                  <button type="button" id="btn-clear" class="btn btn-sm btn-outline-danger">Очистити</button>
+                </div>
+              </div>
+            </div>
+            <div class ="mx-5 py-4 d-flex justify-content-center" id="main">
+
+            </div>
+            
+          </main>
+        </div>
+      </div>
+  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+ 
+<script>
+ 
+ 
+ 
+var nodes = [],
+    links = [];
+ 
+let node_index = 1;
+var selectedNode = null;
+ 
+var margin = {top: -5, right: -5, bottom: -5, left: -5},
+    width = 960 - margin.left - margin.right,
+    height = 640 - margin.top - margin.bottom;
+ 
+var deletePressed = false,
+    newPressed = false,
+    selectNodePressed = false,
+    selectStartPressed = false;
+ 
+const CIRCLE_RADIUS = 15,
+    CIRCLE_COLOR = 'gray';
+ 
+var zoom = d3.behavior.zoom()
+    .scaleExtent([1, 10])
+    .on("zoom", zoomed);
+ 
+var drag = d3.behavior.drag()
+    .origin(function(d) { return d; })
+    .on("dragstart", dragstarted)
+    .on("drag", dragged)
+    .on("dragend", dragended);
+ 
+var svg = d3.select("#main").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.right + ")")
+    .on('click', newNode)
+    .call(zoom);
+d3.select('#btn-clear').on('click', function(){
+  nodes = [];
+  links = [];
+  location.reload();
+});
+
+
+d3.select('#add_node').on('click', function(){
+  newPressed = true;
+});
+d3.select('#select_node').on('click', function(){
+  selectNodePressed = !selectNodePressed;
+});
+d3.select('#select_start').on('click', function(){
+    
+  if (selectedNode){
+                console.log('h0');
+                var removeIndx = -1;
+      nodes.forEach((el, indx) => {
+        if (el.h === 0){
+          removeIndx = el.id;
+          delete nodes[indx].h;
+        }
+      })
+      var index = nodes.findIndex((el) => el.id === Number(d3.select(selectedNode).attr('id')));
+      nodes[index]['h'] = 0;
+      d3.select(selectedNode).select('text').text(function (d) { return `${d.id}(0)`});
+      d3.select(`.circle[id='${removeIndx}']`).select('text').text(function (d) { return d.id;});
+              }
+});
+d3.select('#btn-minti').on('click', minti);
+
+d3.select('#delete_node').on('click', function(){
+  var deleted = nodes.pop();
+  links = links.filter((el) => {
+    return el.source != deleted.id && el.target != deleted.id;
+  });
+  location.reload();
+});
+
+d3.select('#delete_link').on('click', function(){
+  links.pop();
+  location.reload();
+});
+
+defs = svg.append("defs");
+ 
+defs.append("marker")
+    .attr({
+      "id":"arrow",
+      "viewBox":"0 -5 10 10",
+      "refX":28,
+      "refY":0,
+      "markerWidth":4,
+      "markerHeight":4,
+      "orient":"auto"
+    }).append("path")
+                    .attr("d", "M0,-5L10,0L0,5")
+                    .attr("class","arrowHead");
+ 
+var rect = svg.append("rect")
+    .attr("width", width)
+    .attr("height", height)
+    .style("fill", "none")
+    .style("pointer-events", "all");
+ 
+var container = svg.append("g");
+ 
+container.append("g")
+    .attr("class", "x axis")
+  .selectAll("line")
+    .data(d3.range(0, width, 20))
+  .enter().append("line")
+    .attr("x1", function(d) { return d; })
+    .attr("y1", 0)
+    .attr("x2", function(d) { return d; })
+    .attr("y2", height);
+ 
+container.append("g")
+    .attr("class", "y axis")
+  .selectAll("line")
+    .data(d3.range(0, height, 20))
+  .enter().append("line")
+    .attr("x1", 0)
+    .attr("y1", function(d) { return d; })
+    .attr("x2", width)
+    .attr("y2", function(d) { return d; });
+ 
+var linesG = container.append('g')
+        .attr('class', 'links-group');
+ 
+ 
+function dottype(d) {
+  d.x = +d.x;
+  d.y = +d.y;
+  return d;
+}
+ 
+function newNode() {  
+  if (!newPressed) return; 
+  newPressed= false; 
+  // var input = d3.select('body').append('input')
+  //           .attr('type', 'text')
+  //           .attr('placeholder', 'IntesuvnisTb')
+  //           .style('top', d3.event.clientY + 'px')
+  //           .style('left', d3.event.clientX + 'px')
+  //           .on('blur', function () {
+ 
+  //             nodes.push({
+  //               id: node_index++,
+  //               // weight: Number(this.value) > 0 ? this.value : 0,
+  //               x: Number(input.style('left').slice(0, -2)),
+  //               y: Number(input.style('top').slice(0, -2))              
+  //             });  
+ 
+  //             updateGraph();
+  //             this.remove();
+  //           });
+  //           input.node().focus();
+  console.log(d3.event);
+  nodes.push({
+    id: node_index++,
+    x: d3.event.offsetX,
+    y: d3.event.offsetY             
+  });
+  updateGraph();
+  
+       
+}
+ 
+
+function zoomed() {
+  var e = d3.event,
+      tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale)),
+      ty = Math.min(0, Math.max(e.translate[1], height - height * e.scale));
+  zoom.translate([tx, ty]);
+  container.attr("transform", [
+    "translate(" + [tx, ty] + ")",
+    "scale(" + e.scale + ")"
+  ].join(" "));
+}
+ 
+function updateGraph() {  
+  var lineText = linesG.selectAll('.link-text').data(links);
+  lineText.exit().remove();
+  var lines = linesG.selectAll('.link').data(links);
+  lines.exit().remove();
+  var circles = container.selectAll('.circle')
+                   .data(nodes);
+  circles.exit().remove();
+  var linksG = lines
+   .enter()
+   .append("line")
+   .attr("class", "link")
+   .attr("x1", function(l) {
+     var sourceNode = nodes.filter(function(d) {
+       return d.id == l.source
+     })[0];
+     d3.select(this).attr("y1", sourceNode.y);
+     return sourceNode.x
+   })
+   .attr("x2", function(l) {
+     var targetNode = nodes.filter(function(d) {
+       return d.id == l.target
+     })[0];
+     d3.select(this).attr("y2", targetNode.y);
+     return targetNode.x;
+   })
+  //  .attr("marker-end", "url(#arrow)")
+   .attr("link-source", function(l) {return l.source;})
+   .attr("link-target", function(l) {return l.target;})
+   .attr("fill", "none")
+   .attr("stroke", "grey")
+   .attr('stroke-width', 2);
+   lineText.enter()
+    .append("text")
+    .attr("class", "link-text")
+    .attr("link-source", function(l) {return l.source;})
+    .attr("link-target", function(l) {return l.target;})
+    .text(function (d) {return d.weight;})
+    .attr('dx', function (l){
+      var sourceNode = nodes.filter(function(d) {
+        return d.id == l.source
+      })[0];
+      var targetNode = nodes.filter(function(d) {
+       return d.id == l.target
+     })[0];
+     d3.select(this).attr("dy", (sourceNode.y + targetNode.y)/2);
+     return (sourceNode.x + targetNode.x)/2;
+    });
+ 
+  var circlesG = circles.enter()  
+            .append('g')
+            .attr('class', 'circle')
+            .attr('id', function (d) {return d.id;})
+            .attr('transform', function (d) {
+              return `translate(${d.x}, ${d.y})`;
+            })            
+            .on('dblclick', function () {  
+             
+              d3.event.stopPropagation();            
+              if (selectedNode) {
+                d3.selectAll('.circle-selected').classed("circle-selected", false);
+                if (this === selectedNode) {
+                  selectedNode = null;
+                } else {
+                  if ((links.findIndex(el => el.source === d3.select(selectedNode).attr('id')
+                      && el.target === d3.select(this).attr('id')) != -1) || (links.findIndex(el => el.target === d3.select(selectedNode).attr('id')
+                      && el.source === d3.select(this).attr('id')) != -1)){
+                        selectedNode = null;
+                        return;
+                      }
+                  var clickedNode = this;
+                  var x = Math.round((selectedNode.getBoundingClientRect().left + d3.event.clientX)/2);
+                  var y = Math.round((selectedNode.getBoundingClientRect().top + d3.event.clientY)/2);
+                  var input = d3.select('body').append('input')
+                      .attr('type', 'text')
+                      .attr('class','link-weight')
+                      .attr('placeholder', 'Довжина')
+                      .style('top', y + 'px')
+                      .style('left', x + 'px')
+                      .on('blur', function () {
+                        links.push({
+                          source: Number(d3.select(selectedNode).attr('id')),
+                          target: Number(d3.select(clickedNode).attr('id')),
+                          weight: Number(this.value) > 0 ? Number(this.value) : 0
+                        });
+                        selectedNode = null;
+                        updateGraph();
+                        this.remove();
+                  });
+                  input.node().focus();
+                }
+              } else {
+                d3.select(this).classed("circle-selected", d3.select(this).classed("circle-selected") ? false : true);
+                selectedNode = this;
+              }
+            })
+            .on('click', function(){
+              if (selectNodePressed) {
+                selectNodePressed=false;
+                d3.event.stopPropagation();            
+              if (selectedNode) {
+                d3.selectAll('.circle-selected').classed("circle-selected", false);
+                if (this === selectedNode) {
+                  selectedNode = null;
+                } else {
+                  if ((links.findIndex(el => el.source === d3.select(selectedNode).attr('id')
+                      && el.target === d3.select(this).attr('id')) != -1) || (links.findIndex(el => el.target === d3.select(selectedNode).attr('id')
+                      && el.source === d3.select(this).attr('id')) != -1)){
+                        selectedNode = null;
+                        return;
+                      }
+                  var clickedNode = this;
+                  var x = Math.round((selectedNode.getBoundingClientRect().left + d3.event.clientX)/2);
+                  var y = Math.round((selectedNode.getBoundingClientRect().top + d3.event.clientY)/2);
+                  var input = d3.select('body').append('input')
+                      .attr('type', 'text')
+                      .attr('class','link-weight')
+                      .attr('placeholder', 'Довжина')
+                      .style('top', y + 'px')
+                      .style('left', x + 'px')
+                      .on('blur', function () {
+                        links.push({
+                          source: Number(d3.select(selectedNode).attr('id')),
+                          target: Number(d3.select(clickedNode).attr('id')),
+                          weight: Number(this.value) > 0 ? Number(this.value) : 0
+                        });
+                        selectedNode = null;
+                        updateGraph();
+                        this.remove();
+                  });
+                  input.node().focus();
+                }
+              } else {
+                d3.select(this).classed("circle-selected", d3.select(this).classed("circle-selected") ? false : true);
+                selectedNode = this;
+              }
+              }
+              
+                
+            })
+            .call(drag);      
+    circlesG.append('circle')
+            .attr('r', CIRCLE_RADIUS)
+            .attr('fill', CIRCLE_COLOR);
+    circlesG.append('text')
+            .text(function (d) {
+              return d.id + (d.h >= 0 ? `(${d.h})`: '') ;
+            })
+            .attr('dx', function (d)  { return -4 * ((d.id.toString()+ (d.h >= 0 ? `(${d.h})`: '')).length) })
+            .attr('dy', 5);
+             
+}
+ 
+function dragstarted(d) {  
+  d3.event.sourceEvent.stopPropagation();
+  d3.select(this).classed("dragging", true);
+}
+ 
+function dragged(d) {
+  var index = nodes.findIndex(el => Number(d3.select(this).attr('id')) === el.id);  
+  nodes[index].x = d3.event.x;
+  nodes[index].y = d3.event.y;
+  d3.select(this).attr("transform", `translate(${d3.event.x},${d3.event.y})`);
+  d3.selectAll(`line[link-source='${d3.select(this).attr('id')}']`)
+    .attr('x1', d3.event.x)
+    .attr('y1', d3.event.y);
+  d3.selectAll(`line[link-target='${d3.select(this).attr('id')}']`)
+    .attr('x2', d3.event.x)
+    .attr('y2', d3.event.y);
+ 
+  d3.selectAll(`text[link-source='${d3.select(this).attr('id')}']`)
+    .attr('dx', function (l){
+      var sourceNode = nodes.filter(function(d) {
+        return d.id == l.source
+      })[0];
+      var targetNode = nodes.filter(function(d) {
+       return d.id == l.target
+     })[0];
+     d3.select(this).attr("dy", (sourceNode.y + targetNode.y)/2);
+     return (sourceNode.x + targetNode.x)/2;
+    });
+  d3.selectAll(`text[link-target='${d3.select(this).attr('id')}']`)
+    .attr('dx', function (l){
+      var sourceNode = nodes.filter(function(d) {
+        return d.id == l.source
+      })[0];
+      var targetNode = nodes.filter(function(d) {
+       return d.id == l.target
+     })[0];
+     d3.select(this).attr("dy", (sourceNode.y + targetNode.y)/2);
+     return (sourceNode.x + targetNode.x)/2;
+    });
+ 
+ 
+}
+
+
+
+function dragended(d) {
+  d3.select(this).classed("dragging", false);
+ 
+}
+ 
+window.addEventListener('keydown', function (e){
+  if (e.keyCode === 46) deletePressed = true
+  else
+    if (e.keyCode === 78) newPressed = true;
+});
+ 
+window.addEventListener('keyup', function (e){
+  if (e.keyCode === 46) deletePressed = false
+  else
+    if (e.keyCode === 78) newPressed = false;
+    else if (e.keyCode === 72 && selectedNode) {
+      var removeIndx = -1;
+      nodes.forEach((el, indx) => {
+        if (el.h === 0){
+          removeIndx = el.id;
+          delete nodes[indx].h;
+        }
+      })
+      var index = nodes.findIndex((el) => el.id === Number(d3.select(selectedNode).attr('id')));
+      nodes[index]['h'] = 0;
+      d3.select(selectedNode).select('text').text(function (d) { return `${d.id}(0)`});
+      d3.select(`.circle[id='${removeIndx}']`).select('text').text(function (d) { return d.id;});
+     
+     
+    }
+});
+ 
+function ID() {
+  return '_' + Math.random().toString(36).substr(2, 9);
+};
+ 
+document.addEventListener('DOMContentLoaded', function (){
+ 
+  if (localStorage.getItem('graph') && localStorage.getItem('graph') != ''){
+    var graph = JSON.parse(localStorage.getItem('graph'));
+    nodes = graph.nodes;
+    links = graph.links;
+    console.log(nodes);
+    
+    node_index = nodes.length + 1;
+    updateGraph();
+  }
+});
+ 
+window.onbeforeunload = function() {
+ 
+  localStorage.setItem('graph', JSON.stringify({'nodes': nodes, 'links': links}));
+  return 'SAVE GRAPH';
+};
+ 
+function minti(){
+  if (nodes.findIndex((el)=> el.h === 0) === -1) return;
+  var counter = 1;
+  var H = new Array(nodes.length);
+  var USED_LINKS = [];
+  var I = [(nodes.find(el => el.h === 0).id)];
+  H[nodes.findIndex(el => el.h === 0)] = 0;
+  while (I.length != nodes.length){
+    var temp_h = [];
+ 
+    var avab_links = links.filter( el => (I.findIndex(i => i === el.source || i === el.target) != -1) && ((I.findIndex(i => i === el.source) == -1) || (I.findIndex(i => i === el.target) == -1)));
+    avab_links.forEach(el => {
+      var h = H[I.find(i => el.source === i || el.target === i) - 1] + el.weight;
+      temp_h.push(h);
+    });
+    var min_h = Math.min(...temp_h);
+    var min_link = avab_links[temp_h.findIndex(el => el === min_h)];
+    USED_LINKS.push(min_link);
+    if (I.findIndex(el => el === min_link.source) == -1){
+      I.push(min_link.source);
+      H[min_link.source - 1] = min_h;
+    } else {
+      I.push(min_link.target);
+      H[min_link.target - 1] = min_h;
+    }
+    console.log("Krok #" + counter++);
+    console.log(H);
+    console.log(I);
+  }
+ 
+  d3.selectAll('.link')
+    .attr('stroke', function (d) {
+      return USED_LINKS.find(el => el.source === d.source && el.target === d.target) ? 'green' : 'red';
+    })
+    .attr('stroke-width', function (d) {
+      return USED_LINKS.find(el => el.source === d.source && el.target === d.target) ? 7 : 2;
+    })
+ 
+  d3.selectAll('.circle text').text(function (d){
+    return `${d.id}(${H[d.id - 1]})`;
+  })
+}
+ 
+ 
+ 
+</script>
+</html>
