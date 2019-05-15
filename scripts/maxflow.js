@@ -2,8 +2,8 @@
 // Ford-Fulkerson's Algorithm
 // Copyright (C) Kenji Ikeda 2015
 //
-document.write("<script type='text/javascript' src='./graph.js'></script>");
-document.write("<script type='text/javascript' src='./heap.js'></script>");
+document.write("<script type='text/javascript' src='scripts/graph.js'></script>");
+document.write("<script type='text/javascript' src='scripts/heap.js'></script>");
 
 //
 //	Ford-Fulkerson's Algorithm
