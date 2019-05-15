@@ -60,6 +60,7 @@
     float: left;
     width: 100%;
     min-width: 100%;
+    padding-top: 50px;
 }
 
 #bottom_bar {
@@ -77,10 +78,17 @@
 }
 
 .method-nav {
-    display: block;
-    margin-top: 50px;
-    padding: 0;
+    display: inline-block;
+    padding-top: 50px;
+    width: 400px;
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 .method-body {
-    display: block;
+    display: inline-block;
+    width: calc(100% - 400px);
+    position: absolute;
+    right: 0;
+    top: 0;
 }

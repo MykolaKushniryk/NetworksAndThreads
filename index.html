@@ -27,29 +27,24 @@
     </header>
     
     <div class="container main">
-        <div id="method-minti" class="row method method-minti" style="display: none;">
-
-            <div class="col-md-2 method-nav">
-                    <div class="sidebar-sticky">
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#">
-                                    Дії <span class="sr-only">(current)</span>
-                                </a>
-                            </li>
-                            <li class="nav-item mx-5">
-                                <div class="btn-group-vertical">
-                                    <button type="button" id="add_node" class="btn btn-sm btn-outline-info" data-toggle="tooltip" data-placement="right" title="">Добавити вершину</button>
-                                    <button type="button" id="select_node" class="btn btn-sm btn-outline-info">Вибрати вершину</button>
-                                    <button type="button" id="select_start" class="btn btn-sm btn-outline-info">Задати початок(h0)</button>
-                                    <button type="button" id="delete_node" class="btn btn-sm btn-outline-warning">Видалити вершину</button>
-                                    <button type="button" id="delete_link" class="btn btn-sm btn-outline-warning">Видалити ребро</button>
-                                </div>
-                            </li>
-                        </ul>
+        <div id="method-minti" class="method method-minti" style="display: none;">
+            <div class="method-nav">
+                <div class="nav-item">
+                    <a class="active" href="#">
+                        Дії <span class="sr-only">(current)</span>
+                    </a>
+                </div>
+                <div class="nav-item mx-5">
+                    <div class="btn-group-vertical">
+                        <button type="button" id="add_node" class="btn btn-sm btn-outline-info" data-toggle="tooltip" data-placement="right" title="">Добавити вершину</button>
+                        <button type="button" id="select_node" class="btn btn-sm btn-outline-info">Вибрати вершину</button>
+                        <button type="button" id="select_start" class="btn btn-sm btn-outline-info">Задати початок(h0)</button>
+                        <button type="button" id="delete_node" class="btn btn-sm btn-outline-warning">Видалити вершину</button>
+                        <button type="button" id="delete_link" class="btn btn-sm btn-outline-warning">Видалити ребро</button>
                     </div>
+                </div>
             </div>
-            <div class="col-md-10 method-body">
+            <div class="method-body">
                 <main role="main">
                     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h1 class="h2">Граф</h1>

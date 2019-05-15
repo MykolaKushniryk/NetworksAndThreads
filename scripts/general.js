@@ -7,21 +7,19 @@ var INDEX = 0;
 
 var active_class = 'header-method-active';
 
-document.getElementById("method-minti-button").addEventListener("click", function() {
-    document.getElementById("method-minti").style.display = "block";
-    document.getElementById("method-ford-fulkerson").style.display = "none";
+$("#method-minti-button").click(function() {
+    $("#method-minti").show();
+    $("#method-ford-fulkerson").hide();
     INDEX = methods.findIndex(method => method === "method-minti");
-    document.title = "Лабораторна робота №1";
-
-    document.getElementById("method-minti-button").className += ' ' + active_class;
-    document.getElementById("method-ford-fulkerson-button").classList.remove(active_class);
+    $(document).attr("title", "Лабораторна робота №1");
+    $("#method-minti-button").addClass(active_class);
+    $("#method-ford-fulkerson-button").removeClass(active_class);
 });
-document.getElementById("method-ford-fulkerson-button").addEventListener("click", function() {
-    document.getElementById("method-minti").style.display = "none";
-    document.getElementById("method-ford-fulkerson").style.display = "block";
+$("#method-ford-fulkerson-button").click(function() {
+    $("#method-minti").hide();
+    $("#method-ford-fulkerson").show();
     INDEX = methods.findIndex(method => method === "method-ford-fulkerson");
-    document.title = "Лабораторна робота №2";
-
-    document.getElementById("method-ford-fulkerson-button").className += ' ' + active_class;
-    document.getElementById("method-minti-button").classList.remove(active_class);
+    $(document).attr("title", "Лабораторна робота №1");
+    $("#method-minti-button").removeClass(active_class);
+    $("#method-ford-fulkerson-button").addClass(active_class);
 });
