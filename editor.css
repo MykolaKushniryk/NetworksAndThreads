@@ -1,0 +1,119 @@
+/* === Shared === */
+#app-container {
+  text-align: center;
+  text-rendering: geometricPrecision;
+}
+textarea {
+  text-align: center;
+  display:block;
+  margin: auto;
+}
+textarea.dialog {
+  
+  width: 350px;
+  resize: none;
+  overflow: hidden;
+}
+textarea.transcribe {
+  text-align: left;
+  display: block;
+  margin: auto;
+  width: 80%;
+  height: 1em;
+}
+.transbtncontainer, .solvebtncontainer {
+  display:table;
+  margin:auto;
+}
+.maxflow {
+  text-align: center;
+  display:block;
+  margin:auto;
+}
+
+text {
+  font: 13px sans-serif;
+  pointer-events: none;
+}
+
+/* SVG Elements */
+svg {
+  background-color: #FFF;
+  cursor: default;
+  border: solid;
+  border-width: 1px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.node {
+  text-anchor: middle;
+}
+.node circle {
+  stroke-width: 1.5px;
+}
+
+.link text {
+  text-anchor: middle;
+  dominant-baseline: text-after-edge;
+}
+path.link {
+  fill: none;
+  stroke: #666;
+  stroke-width: 2px;
+}
+
+/* === Editor === */
+svg.editor:not(.active):not(.ctrl) {
+  cursor: crosshair;
+}
+
+.editor .node circle {
+  cursor: pointer;
+}
+.editor .node.selected circle {
+  stroke-width: 2.5px;
+}
+
+.editor .link {
+  cursor: pointer;
+}
+.editor .link .halo {
+  stroke-width: 15px !important;
+  stroke: transparent !important;
+}
+.editor path.selected.link {
+  stroke-dasharray: 10,2;
+}
+
+/* Dragline */
+.editor path.hidden.link {
+  stroke-width: 0;
+}
+.editor path.dragline.link {
+  pointer-events: none;
+}
+
+/* === Show Steps === */
+.link.sending path {
+  stroke-width: 3px;
+  stroke: steelblue;
+}
+.link.resending path {
+  stroke-width: 3px;
+  stroke: brown;
+}
+.link.sending path{
+  stroke-width: 3px;
+  stroke: steelblue;
+}
+.link.sending {
+  fill: steelblue;
+}
+.link.resending {
+  fill: brown;
+}

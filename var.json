@@ -1,0 +1,60 @@
+{
+    "vertices": [
+      {
+        "id": 0,
+        "name": "s",
+        "fixed": true,
+        "x": 94,
+        "y": 300,
+        "index": 0,
+        "weight": 2,
+        "px": 94,
+        "py": 300
+      },
+      {
+        "id": 1,
+        "name": "t",
+        "fixed": true,
+        "x": 846,
+        "y": 300,
+        "index": 1,
+        "weight": 2,
+        "px": 846,
+        "py": 300
+      },
+      {
+        "id": 2,
+        "x": 345.25,
+        "y": 169,
+        "fixed": true,
+        "index": 2,
+        "weight": 2,
+        "px": 345.25,
+        "py": 169,
+        "name": "3"
+      }
+    ],
+    "edges": [
+      {
+        "source": 0,
+        "target": 2,
+        "capacity": 3,
+        "id": "15579361668881",
+        "flow": 2
+      },
+      {
+        "source": 2,
+        "target": 1,
+        "capacity": 2,
+        "id": "15579361668882",
+        "flow": 2
+      },
+      {
+        "source": 0,
+        "target": 1,
+        "capacity": 33,
+        "id": "15579361668883",
+        "flow": 33
+      }
+    ]
+  }

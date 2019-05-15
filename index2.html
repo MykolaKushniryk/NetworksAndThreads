@@ -86,6 +86,7 @@ button {
 
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
         <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Метод мінтні</a>
+    
         <a class="nav-link btn btn-sm btn-outline-secondary team-button" href="#" data-toggle="modal" data-target="#teamModal">                    
           Про програму
         </a>
@@ -111,6 +112,38 @@ button {
                         <button type="button" id="delete_link" class="btn btn-sm btn-outline-warning">Видалити ребро</button>
                     </div>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link active" href="#">                    
+                    Варіанти          </a>
+                </li>
+                <li class="nav-item mx-5">
+                  <div id="vars" class="btn-group-vertical btn-group-toggle" data-toggle="buttons" >
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="options" value ="1" id="option1"  autocomplete="off" checked>1 
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="options" value ="2" id="option2"  autocomplete="off"> 2
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="options" value ="3" id="option3" autocomplete="off"> 3
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="options" value ="4" id="option4" autocomplete="off"> 4
+                    </label>
+                    <label class="btn btn-secondary">
+                      <input type="radio" name="options" id="option5" value ="5" autocomplete="off"> 5
+                    </label>
+                  </div>
+              </li>
+
+              
+              <li>
+                <a class="nav-link btn btn-sm btn-outline-primary" href="./index.html" style="    position: absolute;
+                display: inline-block;
+                bottom: 5%;
+                width: 100%;">Метод Форда-Фалкерсона</a>
+
+              </li>
               </ul>
             </div>
           </nav>
@@ -130,8 +163,8 @@ button {
                   <b>Кафедра:</b> <i>МПУіК</i></br>
                   <b>Група:</b> <i>441ск</i></br>
                   <b>Менеджер:</b> <i>Ільчук Дмитро</i></br>
-                  <b>Програміст:</b> <i>Червеняк Іван, Гуцул Петро</i></br>
-                  <b>Тестувальник:</b> <i>Кушнірик Микола, Метельський Борис</i></br>
+                  <b>Програміст:</b> <i>Червеняк Іван</i></br>
+                  <b>Тестувальник:</b> <i>Кушнірик Микола, Метельский Борис</i></br>
                   <b>Документатор:</b> <i>Нестін Єгор</i></br>
                   </div>
                   <div class="modal-footer justify-content-center text-muted text-center text-small">
@@ -166,7 +199,7 @@ button {
  
 <script>
  
- 
+var variant = 'graph'; 
  
 var nodes = [],
     links = [];
@@ -195,7 +228,8 @@ var drag = d3.behavior.drag()
     .on("dragstart", dragstarted)
     .on("drag", dragged)
     .on("dragend", dragended);
- 
+
+
 var svg = d3.select("#main").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -580,9 +614,31 @@ function ID() {
 };
  
 document.addEventListener('DOMContentLoaded', function (){
- 
-  if (localStorage.getItem('graph') && localStorage.getItem('graph') != ''){
-    var graph = JSON.parse(localStorage.getItem('graph'));
+// d3.select('div#vars').on('mouseup',
+//  function () {
+  // console.log(d3.select("#vars input[checked]").attr('value'));
+  // localStorage.setItem('var',  d3.select("#vars input[checked]").attr('value'));
+  // location.reload()
+//   });
+
+$('input[type=radio]').change(function() {
+  $('input[type=radio]').removeAttr('checked').removeClass('active');
+  this.setAttribute("checked", "checked");
+  console.log(d3.select("#vars input[checked]").attr('value'));
+  localStorage.setItem('var',  d3.select("#vars input[checked]").attr('value'));
+  location.reload()
+
+});
+
+  var nomer = localStorage.getItem('var');
+  var selected = d3.select(`input#option${nomer}`).attr('checked', 'checked');
+console.log(selected.parentNode);
+  d3.select(selected.parentNode).classed("active", true);
+  
+  variant += nomer;
+
+  if (localStorage.getItem(variant) && localStorage.getItem(variant) != ''){
+    var graph = JSON.parse(localStorage.getItem(variant));
     nodes = graph.nodes;
     links = graph.links;
     console.log(nodes);
@@ -594,7 +650,9 @@ document.addEventListener('DOMContentLoaded', function (){
  
 window.onbeforeunload = function() {
  
-  localStorage.setItem('graph', JSON.stringify({'nodes': nodes, 'links': links}));
+localStorage.setItem(variant, JSON.stringify({'nodes': nodes, 'links': links}));
+  
+  
   return 'SAVE GRAPH';
 };
  
