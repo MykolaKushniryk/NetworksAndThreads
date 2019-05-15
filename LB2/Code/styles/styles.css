@@ -1,0 +1,273 @@
+* {
+      box-sizing:border-box;
+}
+
+/* basic stylings ------------------------------------------ */
+body {
+      background: url(https://scotch.io/wp-content/uploads/2014/07/61.jpg);
+}
+.container {
+      font-family:'Roboto';
+      width:760px; 
+      margin:10px 20px; 
+      display:block; 
+      background:#FFF;
+      padding:0px;
+}
+
+h2 {
+      text-align:center; 
+      margin-bottom:50px; 
+}
+h2 small { 
+      font-weight:normal; 
+      color:#888; 
+      display:block; 
+}
+.footer {
+      text-align:center;
+}
+.footer a {
+      color:#53B2C8;
+}
+      /* form starting stylings ------------------------------- */
+      .group        { 
+      position:relative; 
+      margin-bottom:45px; 
+      }
+      input         {
+      font-size:18px;
+      padding:10px 10px 10px 5px;
+      display:block;
+      width:300px;
+      border:none;
+      border-bottom:1px solid #757575;
+      }
+      input:focus     { outline:none; }
+      /* LABEL ======================================= */
+      label          {
+      color:#999; 
+      font-size:18px;
+      font-weight:normal;
+      position:absolute;
+      pointer-events:none;
+      left:5px;
+      top:10px;
+      transition:0.2s ease all; 
+      -moz-transition:0.2s ease all; 
+      -webkit-transition:0.2s ease all;
+      }
+      /* active state */
+      input:focus ~ label, input:valid ~ label    {
+      top:-20px;
+      font-size:14px;
+      color:#5264AE;
+      }
+      /* BOTTOM BARS ================================= */
+      .bar  { position:relative; display:block; width:300px; }
+      .bar:before, .bar:after   {
+      content:'';
+      height:2px; 
+      width:0;
+      bottom:1px; 
+      position:absolute;
+      background:#5264AE; 
+      transition:0.2s ease all; 
+      -moz-transition:0.2s ease all; 
+      -webkit-transition:0.2s ease all;
+      }
+      .bar:before {
+      left:50%;
+      }
+      .bar:after {
+      right:50%; 
+      }
+      /* active state */
+      input:focus ~ .bar:before, input:focus ~ .bar:after {
+      width:50%;
+      }
+      /* HIGHLIGHTER ================================== */
+      .highlight {
+      position:absolute;
+      height:60%; 
+      width:100px; 
+      top:25%; 
+      left:0;
+      pointer-events:none;
+      opacity:0.5;
+      }
+      /* active state */
+      input:focus ~ .highlight {
+      -webkit-animation:inputHighlighter 0.3s ease;
+      -moz-animation:inputHighlighter 0.3s ease;
+      animation:inputHighlighter 0.3s ease;
+      }
+      /* ANIMATIONS ================ */
+      @-webkit-keyframes inputHighlighter {
+      from { background:#5264AE; }
+      to  { width:0; background:transparent; }
+      }
+      @-moz-keyframes inputHighlighter {
+      from { background:#5264AE; }
+      to  { width:0; background:transparent; }
+      }
+      @keyframes inputHighlighter {
+      from { background:#5264AE; }
+      to  { width:0; background:transparent; }
+      }
+      @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600,700);
+      /* General Buttons */
+      button {
+      width: 130px;
+      height: 40px;
+      background: linear-gradient(to bottom, #4eb5e5 0%,#389ed5 100%); /* W3C */
+      border: none;
+      border-radius: 5px;
+      position: relative;
+      border-bottom: 4px solid #2b8bc6;
+      color: #fbfbfb;
+      font-weight: 600;
+      font-family: 'Open Sans', sans-serif;
+      text-shadow: 1px 1px 1px rgba(0,0,0,.4);
+      font-size: 15px;
+      text-align: left;
+      text-indent: 5px;
+      box-shadow: 0px 3px 0px 0px rgba(0,0,0,.2);
+      cursor: pointer;
+      /* Just for presentation */  
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 20px;
+      }
+      button:active {
+      box-shadow: 0px 2px 0px 0px rgba(0,0,0,.2);
+      top: 1px;
+      }
+      button:after {
+      content: "";
+      width: 0;
+      height: 0;
+      display: block;
+      border-top: 20px solid #187dbc;
+      border-bottom: 20px solid #187dbc;
+      border-left: 16px solid transparent;
+      border-right: 20px solid #187dbc;
+      position: absolute;
+      opacity: 0.6; 
+      right: 0;
+      top: 0;
+      border-radius: 0 5px 5px 0;  
+      }
+      /* Button pointing left */
+      button.back {
+      text-align: right;
+      padding-right: 12px;
+      box-sizing: border-box;
+      }
+      button.back:after {
+      content: "";
+      width: 0;
+      height: 0;
+      display: block;
+      border-top: 20px solid #187dbc;
+      border-bottom: 20px solid #187dbc;
+      border-right: 16px solid transparent;
+      border-left: 20px solid #187dbc;
+      position: absolute;
+      opacity: 0.6; 
+      left: 0;
+      top: 0;
+      border-radius: 5px 0 0 5px;    
+      }
+      /* Single buttons */
+      button.site {
+      width: 40px;
+      text-align: center;
+      text-indent: 0;
+      }
+      button.site:after{
+      display: none;
+      }
+      /* Presentation stuff */
+      .holder {
+      width: 400px;
+      background: #efefef;
+      padding: 30px 10px;
+      box-sizing: border-box;
+      margin: 0 auto;
+      margin-top: 20px;  
+      text-align: center;
+      }
+      h1 {
+      font: 400 16px 'Open Sans';
+      text-transform: uppercase;
+      color: #999;
+      text-shadow: 1px 1px 1px #fff;
+      margin-bottom: 30px;
+      } 
+      /* Popup box BEGIN */
+      .hover_bkgr_fricc{
+      background:rgba(0,0,0,.4);
+      cursor:pointer;
+      display:none;
+      height:100%;
+      position:fixed;
+      text-align:center;
+      top:0;
+      width:100%;
+      z-index:10000;
+      }
+      .hover_bkgr_fricc .helper{
+      display:inline-block;
+      height:100%;
+      vertical-align:middle;
+      }
+      .hover_bkgr_fricc > div {
+      background-color: #fff;
+      box-shadow: 10px 10px 60px #555;
+      display: inline-block;
+      height: auto;
+      max-width: 551px;
+      min-height: 100px;
+      vertical-align: middle;
+      width: 60%;
+      position: relative;
+      border-radius: 8px;
+      padding: 15px 5%;
+      }
+      .popupCloseButton {
+      background-color: #fff;
+      border: 3px solid #999;
+      border-radius: 50px;
+      cursor: pointer;
+      display: inline-block;
+      font-family: arial;
+      font-weight: bold;
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      font-size: 25px;
+      line-height: 30px;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      }
+      .popupCloseButton:hover {
+      background-color: #ccc;
+      }
+      .trigger_popup_fricc {
+      cursor: pointer;
+      font-size: 20px;
+      margin: 20px;
+      display: inline-block;
+      font-weight: bold;
+      }
+      /* Popup box BEGIN */
+
+
+
+
+
+
+
+      
