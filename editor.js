@@ -548,7 +548,7 @@ function makeEditor(){
       .attr('class', 'render btn btn-outline-info mx-2 my-3 btn-sm')
       .attr("name", "solve")
       .attr("type", "button")
-      .text("Загрузити")
+      .text("Завантажити")
       .on('click', renderGraph);
 
   window.autoBoxResize = function () {
